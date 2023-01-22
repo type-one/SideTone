@@ -31,8 +31,10 @@ On Linux, just use cmake .
 On Windows, just use cmake-gui to generate a Visual Studio solution
 
 Tested on Windows 10 and Ubuntu Linux.  Should work also on Raspberry Pi.
+It just use default capture and playback devices.
 
 Launch in a shell using "sidetone.exe" or "sidetone"
+Press "enter" to exit
 
 You can play with different parameters in the audio/audio_context.hpp
 file: format, sample rate, channels, period.
