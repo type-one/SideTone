@@ -73,6 +73,10 @@ namespace audio
         {
             config.capture.format = ma_format_s32;
         }
+        else
+        {
+            config.capture.format = ma_format_unknown;
+        }
 
         config.capture.channels = audio_channels;
         config.sampleRate = audio_frequency;

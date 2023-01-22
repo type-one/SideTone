@@ -73,6 +73,10 @@ namespace audio
         {
             config.playback.format = ma_format_s32;
         }
+        else
+        {
+            config.playback.format = ma_format_unknown;
+        }
 
         config.playback.channels = audio_channels;
         config.sampleRate = audio_frequency;
