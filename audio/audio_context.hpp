@@ -33,6 +33,9 @@ class ma_context;
 
 namespace audio
 {
+    // uncomment to display producer/consumer progress
+    // #define DISPLAY_PROGRESS
+
     // some values tested on Win10/Corei7/AVX2
     // 16000, 20ms, 1
     // 44100, 16ms, 1
@@ -42,17 +45,22 @@ namespace audio
     // 22050, 12ms, 1 (in release)
     // 22050, 8ms, 1  (in release, SIMD/Most optimizations)
     // 22050, 14ms, 2
+    // under VMware player 17 (Ubuntu 20 LTS) on Win10/Corei7/AVX2 host
+    // 22050, 40ms, 1 (in debug)
 
-    constexpr const bool audio_frame_sync = true;
+    // parameters to tune
+#if defined(_WIN32)
+    constexpr const int audio_period_ms = 12; // more aggressive/lower latency
+#else
+    constexpr const int audio_period_ms = 40; // more conservative by default
+#endif
+
+    constexpr const bool audio_frame_sync = true; // sync producer/consumer
     constexpr const int audio_frequency = 22050;
-    constexpr const int audio_period_ms = 12;
     constexpr const int audio_frame_size = ((audio_frequency * audio_period_ms) / 1000);
-    constexpr const int audio_channels = 1;
-    using sample_t = std::int16_t;
-    // using sample_t = float;
-
-    // uncomment to display producer/consumer progress
-    // #define DISPLAY_PROGRESS
+    constexpr const int audio_channels = 1; // mono (1), stereo (2)
+    using sample_t = std::int16_t;          // S16_LE
+    // using sample_t = float; // F32
 
     class audio_context : public tools::non_copyable
     {
