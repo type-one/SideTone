@@ -1,5 +1,5 @@
 # SideTone
-Portable C++ voice capture and low latency feedback
+Portable C++ voice capture and (relatively) low latency feedback
 
 https://github.com/type-one/SideTone
 
@@ -27,10 +27,14 @@ scenario, but I didn't want to rely on that for the test.
 Can be compiled and Linux and Windows, and should be easily
 adapted for other platforms supported by miniaudio (Mac, Android, BSD).
 
+The underlying miniaudio uses the standard default sound API of the OS (Linux/ALSA, Windows/WinMM, 
+Android/OpenSLES, Mac/CoreAudio...) and not a specific low latency one (Jack, ASIO, ...),
+with default parameters.
+
 On Linux, just use cmake .
 On Windows, just use cmake-gui to generate a Visual Studio solution
 
-Tested on Windows 10 and Ubuntu Linux.  Should work also on Raspberry Pi.
+Tested on Windows 10 and Ubuntu Linux (under VMWare Player 17).  Should work also on Raspberry Pi.
 It just use default capture and playback devices.
 
 Launch in a shell using "sidetone.exe" or "sidetone"
@@ -38,6 +42,13 @@ Press "enter" to exit
 
 You can play with different parameters in the audio/audio_context.hpp
 file: format, sample rate, channels, period.
+
+Recommended parameters are 22050 hz, mono (1 channel), signed 16, and a period between 
+12 and 40 ms.  On specific audio boards and on native host, lower parameters can probably
+be used.  
+
+Compiling in release with O3/Ox/fast-math/SIMD optimisations can help to lower 
+the period.  Disabling the progress display can also help to lower the period.
 
 Enjoy
 
