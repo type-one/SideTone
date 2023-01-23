@@ -2,6 +2,8 @@
 // Audio Playback - Spare time development for fun                             //
 // (c) 2023 Laurent Lardinois https://be.linkedin.com/in/laurentlardinois      //
 //                                                                             //
+// https://github.com/type-one/SideTone                                        //
+//                                                                             //
 // This software is provided 'as-is', without any express or implied           //
 // warranty.In no event will the authors be held liable for any damages        //
 // arising from the use of this software.                                      //
@@ -43,7 +45,7 @@ namespace audio
         void frame_playback(ma_device* device, void* output, const void* input, ma_uint32 frame_count)
         {
             (void)input;
-            
+
             auto* samples = reinterpret_cast<sample_t*>(output);
             auto* instance = reinterpret_cast<audio_playback*>(device->pUserData);
             if (instance)
