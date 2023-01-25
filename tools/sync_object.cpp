@@ -37,16 +37,20 @@ namespace tools
 
     sync_object::~sync_object()
     {
-        std::lock_guard<std::mutex> guard(m_mutex);
-        m_signaled = true;
-        m_stop = true;
+        {
+            std::lock_guard<std::mutex> guard(m_mutex);
+            m_signaled = true;
+            m_stop = true;
+        }
         m_cond.notify_all();
     }
 
     void sync_object::signal()
     {
-        std::lock_guard<std::mutex> guard(m_mutex);
-        m_signaled = true;
+        {
+            std::lock_guard<std::mutex> guard(m_mutex);
+            m_signaled = true;
+        }
         m_cond.notify_one();
     }
 
