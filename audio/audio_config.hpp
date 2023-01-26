@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------//
-// Audio Context - Spare time development for fun                              //
+// Audio Config - Spare time development for fun                               //
 // (c) 2023 Laurent Lardinois https://be.linkedin.com/in/laurentlardinois      //
 //                                                                             //
 // https://github.com/type-one/SideTone                                        //
@@ -23,30 +23,45 @@
 
 #pragma once
 
-#if !defined(__AUDIO_CONTEXT_HPP__)
-#define __AUDIO_CONTEXT_HPP__
-
-#include "tools/non_copyable.hpp"
-#include "audio_config.hpp"
+#if !defined(__AUDIO_CONFIG_HPP__)
+#define __AUDIO_CONFIG_HPP__
 
 #include <cstdint>
-#include <memory>
-
-class ma_context;
 
 namespace audio
 {
-    class audio_context : public tools::non_copyable
-    {
-    public:
-        audio_context();
-        ~audio_context();
+    // uncomment to display producer/consumer progress
+    // #define DISPLAY_PROGRESS
 
-        ma_context& context();
+    // some values tested on Win10/Corei7/AVX2
+    // 16000, 20ms, 1
+    // 44100, 16ms, 1
+    // 44100, 20ms, 2
+    // 48000, 50ms, 1
+    // 22050, 20ms, 1 (in debug)
+    // 22050, 12ms, 1 (in release)
+    // 22050, 8ms, 1  (in release, SIMD/Most optimizations)
+    // 22050, 14ms, 2
+    // under VMware player 17 (Ubuntu 20 LTS) on Win10/Corei7/AVX2 host
+    // 22050, 40ms, 1 (in debug)
+    // under Linux host
+    // 22050, 8ms, 1 (in debug)
 
-    private:
-        std::unique_ptr<ma_context> m_context;
-    };
+    // parameters to tune
+#if defined(_WIN32)
+    // increase if you hear clicks
+    constexpr const int audio_period_ms = 12; // works on Windows host, Core i7
+#else
+    constexpr const int audio_period_ms = 8; // works on Linux host, Core i7
+    // constexpr const int audio_period_ms = 40; // works on Linux VM (vmplayer 17) under Windows host, Core i7
+#endif
+
+    constexpr const bool audio_frame_sync = true; // sync producer/consumer
+    constexpr const int audio_frequency = 22050;
+    constexpr const int audio_frame_size = ((audio_frequency * audio_period_ms) / 1000);
+    constexpr const int audio_channels = 1; // mono (1), stereo (2)
+    using sample_t = std::int16_t;          // S16_LE
+    // using sample_t = float; // F32
 }
 
-#endif //  __AUDIO_CONTEXT_HPP__
+#endif //  __AUDIO_CONFIG_HPP__
