@@ -3,7 +3,10 @@ Portable C++ voice capture and (relatively) low latency feedback
 
 https://github.com/type-one/SideTone
 
-Note: C11 implementation available at https://github.com/type-one/CSideTone
+Note:
+C11 implementation available at https://github.com/type-one/CSideTone
+Low latency implementation using miniaudio duplex feature
+at https://github.com/type-one/SideToneDuplex
 
 # What
 Small test program written in C++17 to have voice feedback with reasonably short latency. 
